@@ -21,7 +21,7 @@ from recommonmark.parser import CommonMarkParser
 # -- Project information -----------------------------------------------------
 
 project = u'Modeling Service Documentation'
-copyright = u'2019, Reggie Goolsby'
+copyright = u'2019, Wildland Fire Management RD&A'
 author = u'Reggie Goolsby'
 
 # The short X.Y version

@@ -1,0 +1,191 @@
+{
+	"info": {
+		"_postman_id": "22163896-4dc8-4735-a40b-0eb301e320cf",
+		"name": "Fire Modeling Services Framework",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Landscape",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "pyronerd62",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "paladin62",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "West Longitude",
+							"value": "-123.7835",
+							"type": "text"
+						},
+						{
+							"key": "East Longitude",
+							"value": "-123.6352",
+							"type": "text"
+						},
+						{
+							"key": "North Latitude",
+							"value": "41.8042",
+							"type": "text"
+						},
+						{
+							"key": "South Latitude",
+							"value": "41.7534",
+							"type": "text"
+						},
+						{
+							"key": "Landfire Year",
+							"value": "2014",
+							"type": "text"
+						},
+						{
+							"key": "Resolution",
+							"value": "30",
+							"type": "text"
+						},
+						{
+							"key": "Fuel Model Type",
+							"value": "40",
+							"type": "text"
+						},
+						{
+							"key": "Edit Rules",
+							"value": "\"JSON\"",
+							"type": "text"
+						},
+						{
+							"key": "Generate Geotiff",
+							"value": "false",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://192.255.42.9/landscapeREST/landscape/create",
+					"protocol": "http",
+					"host": [
+						"192",
+						"255",
+						"42",
+						"9"
+					],
+					"path": [
+						"landscapeREST",
+						"landscape",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Landscape Status",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "paladin62",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "pyronerd62",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://192.255.42.9/landscapeREST/landscape/status/4600",
+					"protocol": "http",
+					"host": [
+						"192",
+						"255",
+						"42",
+						"9"
+					],
+					"path": [
+						"landscapeREST",
+						"landscape",
+						"status",
+						"4600"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "paladin62",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "pyronerd62",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "83b87542-4f55-452e-8903-72aa3daa6092",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "1a9d8559-37a5-4279-869b-c51c11eb0b1e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

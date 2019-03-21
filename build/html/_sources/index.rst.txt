@@ -1,23 +1,18 @@
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Getting Started
-   :numbered:
-
-   intro/getting-started
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Landscape Service
-   :numbered:
-
-   landscape/intro
-   landscape/create
-
 Fire Modeling Services Framework
 ================================
 
-Description
+Welcome to the Fire Modeling Services Framework. 
+
+
+.. note::
+    We currently do not have and SKD's available for download. These are in developement with no timetable for deployment. 
+    All interactions can be perfomed using either ":download:`Postman <files/Fire_Modeling_Services_Framework.postman_collection.zip>` or |swagger_link|.
+
+You can |location_link|.
+
+.. |swagger_link| raw:: html
+
+   <a href="https://swagger.io/" target="_blank">Swagger</a>
 
 First Steps
 -----------
@@ -27,5 +22,16 @@ Describe First Steps
 
 * **Getting started**:
   :doc:`Recommended External Applications <intro/getting-started>`
- 
- 
+
+ .. toctree::
+   :maxdepth: 2
+   :caption: Getting Started
+
+   intro/getting-started
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Landscape Service
+
+   landscape/intro
+   landscape/create
