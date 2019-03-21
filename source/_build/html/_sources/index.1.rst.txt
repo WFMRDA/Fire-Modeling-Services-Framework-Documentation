@@ -1,57 +1,31 @@
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
-   
-Modeling Service
-==========================================================
+   :caption: Getting Started
+   :numbered:
 
-Another Simple Header
-=====================
+   intro/getting-started
 
-Here is some text explaining explaining some complicated stuff:: 
+.. toctree::
+   :maxdepth: 2
+   :caption: Landscape Service
+   :numbered:
 
-    print_r('hello world');
+   landscape/intro
+   landscape/create
 
-This is a normal text paragraph. The next paragraph is a code sample::
+Fire Modeling Services Framework
+================================
 
-    It is not processed in any way, except
-    that the indentation is removed.
+Description
 
-    It can span multiple lines.
-
-This is a normal text paragraph again.
-
-.. code-block:: json 
-    :linenos:
-
-    {
-        "key": "value",
-        "key2": "value2",
-        ...
-    }
-    
-
-.. code-block:: json
-
-    { "key": "value", "key2": "value2", ... }
-
-.. code-block:: html+php
-
-    <?php echo $this->foobar(); ?>
+First Steps
+-----------
+ 
+Describe First Steps
 
 
-.. code-block:: yaml
-
-    { foo: bar, bar: { foo: bar, bar: baz } }
-
-
-Guide
-^^^^^
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+* **Getting started**:
+  :doc:`Recommended External Applications <intro/getting-started>`
+ 
+ 

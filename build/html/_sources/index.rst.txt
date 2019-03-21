@@ -12,6 +12,7 @@
    :numbered:
 
    landscape/intro
+   landscape/create
 
 Fire Modeling Services Framework
 ================================

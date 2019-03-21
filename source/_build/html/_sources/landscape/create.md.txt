@@ -1,0 +1,21 @@
+Creating a Landscape
+====================
+
+Creating a landscape requires a POST request.
+
+Code
+----
+
+# H1
+## H2
+### H3
+#### H4
+##### H5
+###### H6
+
+
+**PHP**
+
+.. code-block:: php
+
+    <?php echo $this->foobar(); ?>
