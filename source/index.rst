@@ -19,8 +19,7 @@ Welcome to the Fire Modeling Services Framework.
    :maxdepth: 2
    :caption: Resources
 
-   getting-started
-   tutorials
+   getting-started 
 
 .. toctree::
    :maxdepth: 2
