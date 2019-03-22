@@ -1,3 +1,6 @@
+
+.. title:: Fire Modeling Services Framework Documentation
+
 Fire Modeling Services Framework
 ================================
 
@@ -5,33 +8,30 @@ Welcome to the Fire Modeling Services Framework.
 
 
 .. note::
-    We currently do not have and SKD's available for download. These are in developement with no timetable for deployment. 
-    All interactions can be perfomed using either ":download:`Postman <files/Fire_Modeling_Services_Framework.postman_collection.zip>` or |swagger_link|.
+    We currently do not have any SKD's available for download. These are currently in development. 
+    All interactions can be tested using either ":download:`Postman <files/Fire_Modeling_Services_Framework.postman_collection.zip>` or |swagger_link|.
 
-You can |location_link|.
+    We also have a tutorial site located at |tutorial_site|.
 
-.. |swagger_link| raw:: html
+.. **Getting started**: :doc:`Recommended External Applications <intro/getting-started>`
 
-   <a href="https://swagger.io/" target="_blank">Swagger</a>
-
-First Steps
------------
- 
-Describe First Steps
-
-
-* **Getting started**:
-  :doc:`Recommended External Applications <intro/getting-started>`
-
- .. toctree::
+.. toctree::
    :maxdepth: 2
-   :caption: Getting Started
+   :caption: Resources
 
-   intro/getting-started
+   getting-started
+   tutorials
 
 .. toctree::
    :maxdepth: 2
    :caption: Landscape Service
 
-   landscape/intro
-   landscape/create
+   landscape
+
+.. |swagger_link| raw:: html
+
+  <a href="https://swagger.io/" target="_blank">Swagger</a>
+
+.. |tutorial_site| raw:: html
+
+  <a href="http://modeling-service-tutorials.wfmrda.com" target="_blank">here</a>
