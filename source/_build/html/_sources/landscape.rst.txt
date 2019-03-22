@@ -46,6 +46,37 @@ Request Body
 
 Response
 --------
+ 
+.. code-block:: json  
+
+    {
+        "success": true,
+        "queued": false,
+        "includesWarningOrInfo": false,
+        "multipleResponseMsgs": false,
+        "msgCollector": null,
+        "responseMessage": "Request to create landscape with ID 5404 has been submitted",
+        "entityId": 5404
+    }
+
+
++-------------------------+---------+
+| Param                   | type    |
++=========================+=========+
+|*success*                | boolean |
++-------------------------+---------+
+|*queued*                 | boolean |
++-------------------------+---------+
+|*includesWarningOrInfo*  | boolean |
++-------------------------+---------+
+|*multipleResponseMsgs*   | boolean |
++-------------------------+---------+
+|*msgCollector*           | string  |
++-------------------------+---------+
+|*responseMessage*        | string  |
++-------------------------+---------+
+|*entityId*               | integer |
++-------------------------+---------+
 
 
 
