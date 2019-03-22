@@ -14,7 +14,7 @@ Request Body
 ------------
 
 .. note::
-    Currently we only accept code :code:`x-www-form-urlencoded` payloads
+    Currently we only accept :code:`x-www-form-urlencoded` response body
 
 +------------------+---------+----------+-----------------------+-------------------------------------------------------------+
 | Param            | type    | Required | Options               | Description                                                 |
