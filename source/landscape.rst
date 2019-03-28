@@ -89,13 +89,13 @@ The Landscape Service allows landscape files to be edited at the time of creatio
 
 
 .. note::
-    All edit rules are passed to the Landscape Service as :code:`JSON`. For Landscape Service Edit Rules, all strings are case insensitive.  Thus, “lookup” can be passed as “lookup”, “Lookup”, “LOOKUP”, or “LooKUp”.   It should also be noted that whitespace (spaces, tabs, carriage returns, and linefeeds) between the components is optional.
+    All edit rules are passed to the Landscape Service as :code:`JSON`. For Landscape Service Edit Rules, all strings are case insensitive.  Thus, "lookup" can be passed as "lookup", "Lookup", "LOOKUP", or "LooKUp".   It should also be noted that whitespace (spaces, tabs, carriage returns, and linefeeds) between the components is optional.
 
 
 LANDFIRE Lookup Rules Syntax
 ----------------------------
 
-The name for a LANDFIRE Lookup rule is “lookup”.  Each LANDFIRE Lookup rule must contain three components (Category, Severity, and Timeframe) and each of the required components has three values that can be used.  There is also a fourth optional parameter (Mask) that can be used for a given rule.
+The name for a LANDFIRE Lookup rule is "lookup".  Each LANDFIRE Lookup rule must contain three components (Category, Severity, and Timeframe) and each of the required components has three values that can be used.  There is also a fourth optional parameter (Mask) that can be used for a given rule.
 
 +------------------+--------------+---------------+-------------------------------------------------------------------------------------------------------------+
 | Component Name   | String Value | Numeric Value | Description                                                                                                 |
@@ -123,7 +123,7 @@ Thus, if you want to obtain the long term landscape by modeling a moderate sever
         "lookup":{
             "category":"treatment",
             "severity":"moderate",
-            "timeframe":”8 years”
+            "timeframe":"8 years"
         }
     }
 
@@ -136,7 +136,7 @@ Or
         "Lookup":  {
             "category":"treatment",
             "severity":"2",
-            "timeframe":”3”
+            "timeframe":"3"
         }
     }
 
@@ -148,11 +148,11 @@ Or
         "LOOKUP":  {
             "CATEGORY":"2", 
             "SEVERITY":"Moderate",
-            "timeframe":”3”
+            "timeframe":"3"
         }
     }
 
-You can also pass multiple Lookup rules at one time – either in an array or by repeating the “Lookup” name.  That is, the following two options are equivalent:
+You can also pass multiple Lookup rules at one time – either in an array or by repeating the "Lookup" name.  That is, the following two options are equivalent:
 
 .. code-block:: json
 
@@ -181,7 +181,7 @@ Or
             "severity":"moderate",
             "timeframe":3
         }, 
-        ”LOOKUP”:{
+        "LOOKUP":{
             "category":"wildfire",
             "severity":"low",
             "timeframe":1
@@ -189,33 +189,33 @@ Or
     }
 
 In the previous instance, the landscape would first be altered by a moderately severe treatment without removal of slash and then allowed to recover for 5 to 10 years.  After that, the landscape would experience a low severity burn and then be allowed to recover for 1 year.  If this set of rules were applied, the second lookup rule would be applied to the results of the first lookup rule.
-In the two examples given, the LANDFIRE Lookup treatments were both applied to the entire landscape.  As previously mentioned, it is also possible to restrict a treatment by attaching a shape file to a given rule.  To do this, you would first need to upload one or more shape files to the Landscape Service and then apply an individual shape file identifier as a “mask” for the appropriate rule.  A shape file identifier is returned whenever a shape file is successfully uploaded to a service.   Assuming you had previously uploaded shapes with IDs of 174 and 2191, you could apply the previous pair of Lookup rules to different portions of the landscape using the following syntax:
+In the two examples given, the LANDFIRE Lookup treatments were both applied to the entire landscape.  As previously mentioned, it is also possible to restrict a treatment by attaching a shape file to a given rule.  To do this, you would first need to upload one or more shape files to the Landscape Service and then apply an individual shape file identifier as a "mask" for the appropriate rule.  A shape file identifier is returned whenever a shape file is successfully uploaded to a service.   Assuming you had previously uploaded shapes with IDs of 174 and 2191, you could apply the previous pair of Lookup rules to different portions of the landscape using the following syntax:
 
 .. code-block:: json
 
     {
         "LOOKUP": [
             {
-                "category":"treatment", 
+                "category":"treatment",
                 "severity":"moderate",
-                "timeframe":3, 
-                “mask”:174
-            }, 
+                "timeframe":3,
+                "mask":174
+            },
             {
-                “mask”:2191,
-                "category":"wildfire", 
+                "mask":2191,
+                "category":"wildfire",
                 "severity":"low",
                 "timeframe":1
             }
         ]
     }
 
-You should also note that the order of the name/value pairs within a Lookup rule is inconsequential.  That is, “category”, “severity”, “timeframe” and “mask” can be passed in any order within a given rule.
+You should also note that the order of the name/value pairs within a Lookup rule is inconsequential.  That is, "category", "severity", "timeframe" and "mask" can be passed in any order within a given rule.
 
 User-Defined Edit Rules Syntax
 ------------------------------
 
-The name for a user-defined edit rule is “edit”.  A user-defined edit rule consists of a non-empty set of conditions as well as a non-empty set of attributes to change when those conditions are met.  As is the case with LANDFIRE Lookup rules, a user-defined edit rule can be applied across the entire landscape or restricted to a mask (uploaded shape file that intersects the landscape).  Other than the CV (clear value) change operator, each condition and change object associated with a user-defined edit rule requires three name/value pairs – “attribute”, “operator”, and “pair”.  However, the set of operators available for a condition is distinct from the set of operators available for a change.  The following edit rule
+The name for a user-defined edit rule is "edit".  A user-defined edit rule consists of a non-empty set of conditions as well as a non-empty set of attributes to change when those conditions are met.  As is the case with LANDFIRE Lookup rules, a user-defined edit rule can be applied across the entire landscape or restricted to a mask (uploaded shape file that intersects the landscape).  Other than the CV (clear value) change operator, each condition and change object associated with a user-defined edit rule requires three name/value pairs – "attribute", "operator", and "pair".  However, the set of operators available for a condition is distinct from the set of operators available for a change.  The following edit rule
 
 .. code-block:: json
 
@@ -242,7 +242,7 @@ There are eight landscape attributes associated with each cell of a landscape fi
 
 +---------------------+--------------+---------------+--------+----------------------------------------------------------------------------------------------------+
 | Attribute           | Short Form   | Numeric Value | Change | Comments                                                                                           |
-+=====================+==============+===============+========|====================================================================================================+ 
++=====================+==============+===============+========+====================================================================================================+
 |Elevation            | elv          | 1             | No     | Elevation of landscape cell in meters                                                              |
 +---------------------+--------------+---------------+--------+----------------------------------------------------------------------------------------------------+
 |Slope                | slp          | 2             | No     | Elevation of landscape cell in meters                                                              |
@@ -257,7 +257,7 @@ There are eight landscape attributes associated with each cell of a landscape fi
 +---------------------+--------------+---------------+--------+----------------------------------------------------------------------------------------------------+
 |Canopy Base Height   | cbh          | 7             | Yes    | Elevation of landscape cell in meters                                                              |
 +---------------------+--------------+---------------+--------+----------------------------------------------------------------------------------------------------+
-|Canopy Bulk Density  | cbd          | 8             | Yes    | Elevation of landscape cell in meters                                                              | 
+|Canopy Bulk Density  | cbd          | 8             | Yes    | Elevation of landscape cell in meters                                                              |
 +---------------------+--------------+---------------+-------------------------------------------------------------------------------------------------------------+
 
 

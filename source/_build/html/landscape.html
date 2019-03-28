@@ -410,34 +410,188 @@ Cannot be more than “North Latitude”</td>
 </tbody>
 </table>
 <p>Thus, if you want to obtain the long term landscape by modeling a moderate severity treatment without the removal of slash, you could pass any of the following:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
-    &quot;lookup&quot;:  {
-        &quot;category&quot;:&quot;treatment&quot;,
-        &quot;severity&quot;:&quot;moderate&quot;,
-        &quot;timeframe&quot;:”8 years”
-    }
-}
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;lookup&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="s2">&quot;treatment&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="s2">&quot;moderate&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;timeframe&quot;</span><span class="p">:</span><span class="s2">&quot;8 years&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>Or</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
-    &quot;Lookup&quot;:  {
-        &quot;category&quot;:&quot;treatment&quot;,
-        &quot;severity&quot;:&quot;2&quot;,
-        &quot;timeframe&quot;:”3”
-    }
-}
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;Lookup&quot;</span><span class="p">:</span>  <span class="p">{</span>
+        <span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="s2">&quot;treatment&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;timeframe&quot;</span><span class="p">:</span><span class="s2">&quot;3&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>Or</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
-    &quot;LOOKUP&quot;:  {
-        &quot;CATEGORY&quot;:&quot;2&quot;,
-        &quot;SEVERITY&quot;:&quot;Moderate&quot;,
-        &quot;timeframe&quot;:”3”
-    }
-}
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;LOOKUP&quot;</span><span class="p">:</span>  <span class="p">{</span>
+        <span class="nt">&quot;CATEGORY&quot;</span><span class="p">:</span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;SEVERITY&quot;</span><span class="p">:</span><span class="s2">&quot;Moderate&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;timeframe&quot;</span><span class="p">:</span><span class="s2">&quot;3&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
+</div>
+<p>You can also pass multiple Lookup rules at one time – either in an array or by repeating the “Lookup” name.  That is, the following two options are equivalent:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;LOOKUP&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="s2">&quot;treatment&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="s2">&quot;moderate&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;timeframe&quot;</span><span class="p">:</span><span class="mi">3</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="s2">&quot;wildfire&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="s2">&quot;low&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;timeframe&quot;</span><span class="p">:</span><span class="mi">1</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Or</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;LOOKUP&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="s2">&quot;treatment&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="s2">&quot;moderate&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;timeframe&quot;</span><span class="p">:</span><span class="mi">3</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;LOOKUP&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="s2">&quot;wildfire&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="s2">&quot;low&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;timeframe&quot;</span><span class="p">:</span><span class="mi">1</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In the previous instance, the landscape would first be altered by a moderately severe treatment without removal of slash and then allowed to recover for 5 to 10 years.  After that, the landscape would experience a low severity burn and then be allowed to recover for 1 year.  If this set of rules were applied, the second lookup rule would be applied to the results of the first lookup rule.
+In the two examples given, the LANDFIRE Lookup treatments were both applied to the entire landscape.  As previously mentioned, it is also possible to restrict a treatment by attaching a shape file to a given rule.  To do this, you would first need to upload one or more shape files to the Landscape Service and then apply an individual shape file identifier as a “mask” for the appropriate rule.  A shape file identifier is returned whenever a shape file is successfully uploaded to a service.   Assuming you had previously uploaded shapes with IDs of 174 and 2191, you could apply the previous pair of Lookup rules to different portions of the landscape using the following syntax:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;LOOKUP&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="s2">&quot;treatment&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="s2">&quot;moderate&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;timeframe&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span>
+            <span class="nt">&quot;mask&quot;</span><span class="p">:</span><span class="mi">174</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;mask&quot;</span><span class="p">:</span><span class="mi">2191</span><span class="p">,</span>
+            <span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="s2">&quot;wildfire&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="s2">&quot;low&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;timeframe&quot;</span><span class="p">:</span><span class="mi">1</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You should also note that the order of the name/value pairs within a Lookup rule is inconsequential.  That is, “category”, “severity”, “timeframe” and “mask” can be passed in any order within a given rule.</p>
+<p>The name for a user-defined edit rule is “edit”.  A user-defined edit rule consists of a non-empty set of conditions as well as a non-empty set of attributes to change when those conditions are met.  As is the case with LANDFIRE Lookup rules, a user-defined edit rule can be applied across the entire landscape or restricted to a mask (uploaded shape file that intersects the landscape).  Other than the CV (clear value) change operator, each condition and change object associated with a user-defined edit rule requires three name/value pairs – “attribute”, “operator”, and “pair”.  However, the set of operators available for a condition is distinct from the set of operators available for a change.  The following edit rule</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;edit&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;condition&quot;</span><span class="p">:{</span>
+            <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;elevation&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;eq&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">-1</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;change&quot;</span><span class="p">:{</span>
+            <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;canopy cover&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">10</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>implies that whenever the elevation is equal to -1 meter on the landscape, the canopy cover will be set to 10 percent.  As was the case with LANDFIRE Lookup rules, the order of the name/value pairs within a condition or change data object is irrelevant.  In addition, the order of condition or change data objects within a user-defined edit rule is also inconsequential.  However, the order of individual edit rules within an array of edit rules can be very consequential.  There are a couple of reasons for this but the primary reason is that once an individual attribute within a landscape cell is modified by a user-defined edit rule, it will not be modified by subsequent user-defined edit rules.</p>
+<p>There are eight landscape attributes associated with each cell of a landscape file.  Three of these (elevation, slope, and aspect) cannot be modified within the Landscape Service.  The remaining five attributes (fuel model, stand height, canopy cover, canopy base height, and canopy bulk density) can be modified.  The following table specifies how these attributes can be used within a user-defined edit rule.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="9%" />
+<col width="9%" />
+<col width="5%" />
+<col width="63%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td rowspan="2"><blockquote class="first">
+<div>Attribute</div></blockquote>
+<p class="last">Elevation</p>
+</td>
+<td rowspan="2"><blockquote class="first">
+<div>Short Form</div></blockquote>
+<blockquote class="last">
+<div>elv</div></blockquote>
+</td>
+<td rowspan="2"><blockquote class="first">
+<div>Numeric Value</div></blockquote>
+<blockquote class="last">
+<div>1</div></blockquote>
+</td>
+<td rowspan="2"><blockquote class="first">
+<div>Change</div></blockquote>
+<blockquote class="last">
+<div>No</div></blockquote>
+</td>
+<td rowspan="2"><blockquote class="first">
+<div>Comments</div></blockquote>
+<blockquote class="last">
+<div>Elevation of landscape cell in meters</div></blockquote>
+</td>
+</tr>
+<tr class="row-even"></tr>
+<tr class="row-odd"><td>Slope</td>
+<td>slp</td>
+<td>2</td>
+<td>No</td>
+<td>Elevation of landscape cell in meters</td>
+</tr>
+<tr class="row-even"><td>Aspect</td>
+<td>asp</td>
+<td>3</td>
+<td>No</td>
+<td>Elevation of landscape cell in meters</td>
+</tr>
+<tr class="row-odd"><td>Fuel Model</td>
+<td>fm</td>
+<td>4</td>
+<td>Yes</td>
+<td>Elevation of landscape cell in meters</td>
+</tr>
+<tr class="row-even"><td>Stand Height</td>
+<td>sh</td>
+<td>5</td>
+<td>Yes</td>
+<td>Elevation of landscape cell in meters</td>
+</tr>
+<tr class="row-odd"><td>Canopy Cover</td>
+<td>cc</td>
+<td>6</td>
+<td>Yes</td>
+<td>Elevation of landscape cell in meters</td>
+</tr>
+<tr class="row-even"><td>Canopy Base Height</td>
+<td>cbh</td>
+<td>7</td>
+<td>Yes</td>
+<td>Elevation of landscape cell in meters</td>
+</tr>
+<tr class="row-odd"><td>Canopy Bulk Density</td>
+<td>cbd</td>
+<td>8</td>
+<td colspan="2">Yes    | Elevation of landscape cell in meters</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Note that the full attribute name, the short form, or the numeric value can be used to identify an attribute.</p>
 </div>
 </div>
 
