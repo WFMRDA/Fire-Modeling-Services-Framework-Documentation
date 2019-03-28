@@ -4,7 +4,6 @@ Landscape Service
 The Landscape Service allows users to create, edit and download landscapes files.
 Landscape files can be created in either geotiff or LCP which is a raster file comprised of spatial information representing topography (slope, elevation, and aspect), fuel model, and canopy characteristics including canopy cover, canopy base height, canopy height, and canopy bulk density.
 
-
 Creating A Landscape
 ********************
 
@@ -162,7 +161,7 @@ You can also pass multiple Lookup rules at one time – either in an array or by
                 "category":"treatment",
                 "severity":"moderate",
                 "timeframe":3
-            }, 
+            },
             {
                 "category":"wildfire",
                 "severity":"low",
@@ -263,3 +262,137 @@ There are eight landscape attributes associated with each cell of a landscape fi
 
 .. note::
     Note that the full attribute name, the short form, or the numeric value can be used to identify an attribute.
+
+The Condition Operator Data Element
+-----------------------------------
+ 
+There are six condition operator data element values as defined in the following table.
+
++----------+------------------------------------------------------+
+| Operator | The condition is true if the specified attribute...  |
++==========+======================================================+
+|EQ        | is equal to the rule’s value                         |
++----------+------------------------------------------------------+
+|GE        | is greater than or equal to the rule’s value         |
++----------+------------------------------------------------------+
+|GT        | is greater than the rule’s value                     |
++----------+------------------------------------------------------+
+|LE        | is less than or equal to the rule’s value            |
++----------+------------------------------------------------------+
+|LT        | is less than the rule’s value                        |
++----------+------------------------------------------------------+
+
+Multiple conditions can exist for the same attribute.  For example, between can be accomplished by using a combination of a greater than operator with a less than operator.  However, the logical operator between all conditions within a single edit rule is AND.  Thus, multiple user-defined edit rules are required to simulate a logical OR condition.
+
+The Change Operator Data Element
+--------------------------------
+ 
+There are seven change operator data element values as defined in the following table.	
+
++------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Operator   | The condition is true if the specified attribute...                                                                                                     |
++============+=========================================================================================================================================================+
+|CM          | is equal to the rule’s value                                                                                                                            |
++------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+|CV :sup:`*` | Clear the value – set the attribute value to NO DATA (-9999)                                                                                            |
++------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+|CX          | Clamp to a maximum – if the attribute value is greater  than the associated value, set it to that value                                                 |
++------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+|DB          | Decrease by – subtract the associated value from the attribute value; if the new value is out of range, set it to the minimum value for the attribute   |
++------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+|IB          | Increase by – add the associated value to the attribute value; if the new value is out of range, set it to the maximum value for the attribute          |
++------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+|MB          | Multiply by – multiply the attribute value by the associated value; if the new value is out of range, set it to the maximum value for the attribute     |
++------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+|ST :sup:`*` | Set the attribute to the given value                                                                                                                    |
++------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+|CX          | Clamp to a maximum – if the attribute value is greater  than the associated value, set it to that value                                                 |
++------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+.. note::
+    ST and CV are the only change operators that can be used for the fuel model attribute.
+
+Unlike condition operators, multiple change attributes cannot exist for the same attribute.  That is, you cannot have a rule with two change operators that both set the canopy cover.
+
+The Value Data Element
+----------------------
+For both condition and change data objects, the Value data element must be numeric.
+
+Examples
+^^^^^^^^
+
+Multiple conditions within a user-defined edit rule are always ANDed together.  That is, all the conditions must be true in order for the associated changes to be applied.  You will need to use multiple user-defined edit rules to simulate an OR condition.
+For example, the following edit rule changes all Grass-Shrub models that occur at an elevation less than 100 meters to fuel model 104 (GR4 - Moderate Load, Dry Climate Grass) with no canopy characteristics.
+
+.. code-block:: json
+
+    {
+        "edit": {
+            "condition": [
+                {
+                    "attribute": "elevation",
+                    "operator": "lt",
+                    "value": 100
+                },
+                {
+                    "attribute": "fuel model",
+                    "operator": "ge",
+                    "value": 121
+                },
+                {
+                    "attribute": "fuel model",
+                    "operator": "lt",
+                    "value": 130
+                }
+            ],
+            "change": [
+                {
+                    "attribute": "fuel model",
+                    "operator": "st",
+                    "value": 104
+                },
+                {
+                    "attribute": "stand height",
+                    "operator": "st",
+                    "value": 0
+                },
+                {
+                    "attribute": "cc",
+                    "operator": "st",
+                    "value": 0
+                },
+                {
+                    "attribute": "cbh",
+                    "operator": "st",
+                    "value": 0
+                },
+                {
+                    "attribute": "cbd",
+                    "operator": "st",
+                    "value": 0
+                }
+            ]
+        }
+    }
+
+
+ 
+That is:
+
+If
+    the elevation is less than 100 meters AND
+
+    the fuel model is greater than or equal to 121 AND
+
+    the fuel model is less than 130,
+
+then 
+    change the fuel model to 104 AND
+
+    the stand height to 0 meters AND
+
+    the canopy cover to 0 percent AND
+
+    the canopy base height to 0 meters AND
+
+    the canopy bulk density to 0 kg / m^3.

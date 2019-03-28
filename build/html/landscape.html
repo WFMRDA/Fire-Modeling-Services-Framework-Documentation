@@ -101,6 +101,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#landfire-lookup-rules-syntax">LANDFIRE Lookup Rules Syntax</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#user-defined-edit-rules-syntax">User-Defined Edit Rules Syntax</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#the-attribute-data-element">The Attribute Data Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-condition-operator-data-element">The Condition Operator Data Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-change-operator-data-element">The Change Operator Data Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-value-data-element">The Value Data Element</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -595,6 +601,159 @@ In the two examples given, the LANDFIRE Lookup treatments were both applied to t
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Note that the full attribute name, the short form, or the numeric value can be used to identify an attribute.</p>
+</div>
+</div>
+<div class="section" id="the-condition-operator-data-element">
+<h3>The Condition Operator Data Element<a class="headerlink" href="#the-condition-operator-data-element" title="Permalink to this headline">¶</a></h3>
+<p>There are six condition operator data element values as defined in the following table.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Operator</th>
+<th class="head">The condition is true if the specified attribute…</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>EQ</td>
+<td>is equal to the rule’s value</td>
+</tr>
+<tr class="row-odd"><td>GE</td>
+<td>is greater than or equal to the rule’s value</td>
+</tr>
+<tr class="row-even"><td>GT</td>
+<td>is greater than the rule’s value</td>
+</tr>
+<tr class="row-odd"><td>LE</td>
+<td>is less than or equal to the rule’s value</td>
+</tr>
+<tr class="row-even"><td>LT</td>
+<td>is less than the rule’s value</td>
+</tr>
+</tbody>
+</table>
+<p>Multiple conditions can exist for the same attribute.  For example, between can be accomplished by using a combination of a greater than operator with a less than operator.  However, the logical operator between all conditions within a single edit rule is AND.  Thus, multiple user-defined edit rules are required to simulate a logical OR condition.</p>
+</div>
+<div class="section" id="the-change-operator-data-element">
+<h3>The Change Operator Data Element<a class="headerlink" href="#the-change-operator-data-element" title="Permalink to this headline">¶</a></h3>
+<p>There are seven change operator data element values as defined in the following table.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="7%" />
+<col width="93%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Operator</th>
+<th class="head">The condition is true if the specified attribute…</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>CM</td>
+<td>is equal to the rule’s value</td>
+</tr>
+<tr class="row-odd"><td>CV <sup>*</sup></td>
+<td>Clear the value – set the attribute value to NO DATA (-9999)</td>
+</tr>
+<tr class="row-even"><td>CX</td>
+<td>Clamp to a maximum – if the attribute value is greater  than the associated value, set it to that value</td>
+</tr>
+<tr class="row-odd"><td>DB</td>
+<td>Decrease by – subtract the associated value from the attribute value; if the new value is out of range, set it to the minimum value for the attribute</td>
+</tr>
+<tr class="row-even"><td>IB</td>
+<td>Increase by – add the associated value to the attribute value; if the new value is out of range, set it to the maximum value for the attribute</td>
+</tr>
+<tr class="row-odd"><td>MB</td>
+<td>Multiply by – multiply the attribute value by the associated value; if the new value is out of range, set it to the maximum value for the attribute</td>
+</tr>
+<tr class="row-even"><td>ST <sup>*</sup></td>
+<td>Set the attribute to the given value</td>
+</tr>
+<tr class="row-odd"><td>CX</td>
+<td>Clamp to a maximum – if the attribute value is greater  than the associated value, set it to that value</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">ST and CV are the only change operators that can be used for the fuel model attribute.</p>
+</div>
+<p>Unlike condition operators, multiple change attributes cannot exist for the same attribute.  That is, you cannot have a rule with two change operators that both set the canopy cover.</p>
+</div>
+<div class="section" id="the-value-data-element">
+<h3>The Value Data Element<a class="headerlink" href="#the-value-data-element" title="Permalink to this headline">¶</a></h3>
+<p>For both condition and change data objects, the Value data element must be numeric.</p>
+<div class="section" id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<p>Multiple conditions within a user-defined edit rule are always ANDed together.  That is, all the conditions must be true in order for the associated changes to be applied.  You will need to use multiple user-defined edit rules to simulate an OR condition.
+For example, the following edit rule changes all Grass-Shrub models that occur at an elevation less than 100 meters to fuel model 104 (GR4 - Moderate Load, Dry Climate Grass) with no canopy characteristics.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;edit&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;condition&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span> <span class="s2">&quot;elevation&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span> <span class="s2">&quot;lt&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">100</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span> <span class="s2">&quot;fuel model&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">121</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span> <span class="s2">&quot;fuel model&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span> <span class="s2">&quot;lt&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">130</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;change&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span> <span class="s2">&quot;fuel model&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span> <span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">104</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span> <span class="s2">&quot;stand height&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span> <span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span> <span class="s2">&quot;cc&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span> <span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span> <span class="s2">&quot;cbh&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span> <span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span> <span class="s2">&quot;cbd&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span> <span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">0</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>That is:</p>
+<dl class="docutils">
+<dt>If</dt>
+<dd><p class="first">the elevation is less than 100 meters AND</p>
+<p>the fuel model is greater than or equal to 121 AND</p>
+<p class="last">the fuel model is less than 130,</p>
+</dd>
+<dt>then</dt>
+<dd><p class="first">change the fuel model to 104 AND</p>
+<p>the stand height to 0 meters AND</p>
+<p>the canopy cover to 0 percent AND</p>
+<p>the canopy base height to 0 meters AND</p>
+<p class="last">the canopy bulk density to 0 kg / m^3.</p>
+</dd>
+</dl>
 </div>
 </div>
 </div>
