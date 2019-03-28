@@ -93,11 +93,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#creating-a-landscape">Creating A Landscape</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#request-body">Request Body</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#response">Response</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#edit-rules">Edit Rules</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#edit-rules">Edit Rules</a></li>
 </ul>
 
             
@@ -311,9 +311,133 @@ Cannot be more than “North Latitude”</td>
 </tbody>
 </table>
 </div>
-<div class="section" id="edit-rules">
-<span id="id1"></span><h3>Edit Rules<a class="headerlink" href="#edit-rules" title="Permalink to this headline">¶</a></h3>
 </div>
+</div>
+<div class="section" id="edit-rules">
+<span id="id1"></span><h1>Edit Rules<a class="headerlink" href="#edit-rules" title="Permalink to this headline">¶</a></h1>
+<p>The Landscape Service allows landscape files to be edited at the time of creation.  The Landscape Service also allows users to edit a landscape if it was previously created by that user within the Landscape Service.  Both LANDFIRE Lookup rules and user-defined edit rules can be used to edit a landscape file – either concurrently or through the creation of a series of landscape files.  Whenever Lookup and user-defined edit rules are concurrently used, the Lookup rules are always applied prior to the user-defined edit rules.  If multiple rules of a given type are applied, the rules of the same type are always applied in the given order.  However, there are differences between how a series of edit rules are applied and users should be aware of those differences when they choose to edit a landscape.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All edit rules are passed to the Landscape Service as <code class="code docutils literal notranslate"><span class="pre">JSON</span></code>. For Landscape Service Edit Rules, all strings are case insensitive.  Thus, “lookup” can be passed as “lookup”, “Lookup”, “LOOKUP”, or “LooKUp”.   It should also be noted that whitespace (spaces, tabs, carriage returns, and linefeeds) between the components is optional.</p>
+</div>
+<p>The name for a LANDFIRE Lookup rule is “lookup”.  Each LANDFIRE Lookup rule must contain three components (Category, Severity, and Timeframe) and each of the required components has three values that can be used.  There is also a fourth optional parameter (Mask) that can be used for a given rule.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="9%" />
+<col width="10%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Component Name</th>
+<th class="head">String Value</th>
+<th class="head">Numeric Value</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Category</td>
+<td><ul class="first last simple">
+<li>Wildfire</li>
+<li>Treatment</li>
+<li>Removal</li>
+</ul>
+</td>
+<td><ul class="first last simple">
+<li>1</li>
+<li>2</li>
+<li>3</li>
+</ul>
+</td>
+<td><ul class="first last simple">
+<li>Models fire behavior on the landscape</li>
+<li>Thinning without removal of slash</li>
+<li>Thinning with removal of slash</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>Severity</td>
+<td><ul class="first last simple">
+<li>Low</li>
+<li>Moderate</li>
+<li>Severe</li>
+</ul>
+</td>
+<td><ul class="first last simple">
+<li>1</li>
+<li>2</li>
+<li>3</li>
+</ul>
+</td>
+<td><ul class="first last simple">
+<li>Low severity burn or light thinning</li>
+<li>Moderate severity burn or moderate thinning</li>
+<li>High severity burn or heavy thinning</li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td>Timeframe</td>
+<td><ul class="first last simple">
+<li>1 year</li>
+<li>4 years</li>
+<li>8 years</li>
+</ul>
+</td>
+<td><ul class="first last simple">
+<li>1</li>
+<li>2</li>
+<li>3</li>
+</ul>
+</td>
+<td><ul class="first last simple">
+<li>Models short term effects (1 year post treatment)</li>
+<li>Models medium term effects (2 to 5 year post treatment)</li>
+<li>Models long term effects (6 to 10 year post treatment)</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td>Mask</td>
+<td>&#160;</td>
+<td><ul class="first last simple">
+<li>Shape Id</li>
+</ul>
+</td>
+<td><ul class="first last simple">
+<li><em>Optional</em> – the Id is the identifier returned for a given shape when it was uploaded to the service</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Thus, if you want to obtain the long term landscape by modeling a moderate severity treatment without the removal of slash, you could pass any of the following:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;lookup&quot;:  {
+        &quot;category&quot;:&quot;treatment&quot;,
+        &quot;severity&quot;:&quot;moderate&quot;,
+        &quot;timeframe&quot;:”8 years”
+    }
+}
+</pre></div>
+</div>
+<p>Or</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;Lookup&quot;:  {
+        &quot;category&quot;:&quot;treatment&quot;,
+        &quot;severity&quot;:&quot;2&quot;,
+        &quot;timeframe&quot;:”3”
+    }
+}
+</pre></div>
+</div>
+<p>Or</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;LOOKUP&quot;:  {
+        &quot;CATEGORY&quot;:&quot;2&quot;,
+        &quot;SEVERITY&quot;:&quot;Moderate&quot;,
+        &quot;timeframe&quot;:”3”
+    }
+}
+</pre></div>
 </div>
 </div>
 

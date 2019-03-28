@@ -46,8 +46,8 @@ Request Body
 
 Response
 --------
- 
-.. code-block:: json  
+
+.. code-block:: json
 
     {
         "success": true,
@@ -83,4 +83,71 @@ Response
 .. _`Edit Rules`:
 
 Edit Rules
-----------
+==========
+
+The Landscape Service allows landscape files to be edited at the time of creation.  The Landscape Service also allows users to edit a landscape if it was previously created by that user within the Landscape Service.  Both LANDFIRE Lookup rules and user-defined edit rules can be used to edit a landscape file – either concurrently or through the creation of a series of landscape files.  Whenever Lookup and user-defined edit rules are concurrently used, the Lookup rules are always applied prior to the user-defined edit rules.  If multiple rules of a given type are applied, the rules of the same type are always applied in the given order.  However, there are differences between how a series of edit rules are applied and users should be aware of those differences when they choose to edit a landscape.
+
+
+.. note::
+    All edit rules are passed to the Landscape Service as :code:`JSON`. For Landscape Service Edit Rules, all strings are case insensitive.  Thus, “lookup” can be passed as “lookup”, “Lookup”, “LOOKUP”, or “LooKUp”.   It should also be noted that whitespace (spaces, tabs, carriage returns, and linefeeds) between the components is optional.
+
+
+LANDFIRE Lookup Rules Syntax
+----------------------------
+
+The name for a LANDFIRE Lookup rule is “lookup”.  Each LANDFIRE Lookup rule must contain three components (Category, Severity, and Timeframe) and each of the required components has three values that can be used.  There is also a fourth optional parameter (Mask) that can be used for a given rule.
+
++------------------+--------------+---------------+-------------------------------------------------------------------------------------------------------------+
+| Component Name   | String Value | Numeric Value | Description                                                                                                 |
++==================+==============+===============+=============================================================================================================+
+|Category          | - Wildfire   | - 1           | - Models fire behavior on the landscape                                                                     |
+|                  | - Treatment  | - 2           | - Thinning without removal of slash                                                                         |
+|                  | - Removal    | - 3           | - Thinning with removal of slash                                                                            |
++------------------+--------------+---------------+-------------------------------------------------------------------------------------------------------------+
+|Severity          | - Low        | - 1           | - Low severity burn or light thinning                                                                       |
+|                  | - Moderate   | - 2           | - Moderate severity burn or moderate thinning                                                               |
+|                  | - Severe     | - 3           | - High severity burn or heavy thinning                                                                      |
++------------------+--------------+---------------+-------------------------------------------------------------------------------------------------------------+
+|Timeframe         | - 1 year     | - 1           | - Models short term effects (1 year post treatment)                                                         |
+|                  | - 4 years    | - 2           | - Models medium term effects (2 to 5 year post treatment)                                                   |
+|                  | - 8 years    | - 3           | - Models long term effects (6 to 10 year post treatment)                                                    |
++------------------+--------------+---------------+-------------------------------------------------------------------------------------------------------------+
+|Mask              |              | - Shape Id    | - *Optional* – the Id is the identifier returned for a given shape when it was uploaded to the service      |
++------------------+--------------+---------------+-------------------------------------------------------------------------------------------------------------+
+
+Thus, if you want to obtain the long term landscape by modeling a moderate severity treatment without the removal of slash, you could pass any of the following:
+
+.. code-block:: json
+
+    {
+        "lookup":  {
+            "category":"treatment", 
+            "severity":"moderate",
+            "timeframe":”8 years”
+        }
+    }
+
+Or
+
+.. code-block:: json
+
+    {
+        "Lookup":  {
+            "category":"treatment", 
+            "severity":"2",
+            "timeframe":”3”
+        }
+    }
+
+Or
+
+.. code-block:: json
+
+    {
+        "LOOKUP":  {
+            "CATEGORY":"2", 
+            "SEVERITY":"Moderate",
+            "timeframe":”3”
+        }
+    }
+   
