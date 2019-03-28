@@ -83,7 +83,7 @@ Response
 .. _`Edit Rules`:
 
 Edit Rules
-==========
+**********
 
 The Landscape Service allows landscape files to be edited at the time of creation.  The Landscape Service also allows users to edit a landscape if it was previously created by that user within the Landscape Service.  Both LANDFIRE Lookup rules and user-defined edit rules can be used to edit a landscape file – either concurrently or through the creation of a series of landscape files.  Whenever Lookup and user-defined edit rules are concurrently used, the Lookup rules are always applied prior to the user-defined edit rules.  If multiple rules of a given type are applied, the rules of the same type are always applied in the given order.  However, there are differences between how a series of edit rules are applied and users should be aware of those differences when they choose to edit a landscape.
 
@@ -146,7 +146,7 @@ Or
 
     {
         "LOOKUP":  {
-            "CATEGORY":"2", 
+            "CATEGORY":"2",
             "SEVERITY":"Moderate",
             "timeframe":"3"
         }
@@ -177,10 +177,10 @@ Or
 
     {
         "LOOKUP":{
-            "category":"treatment", 
+            "category":"treatment",
             "severity":"moderate",
             "timeframe":3
-        }, 
+        },
         "LOOKUP":{
             "category":"wildfire",
             "severity":"low",
@@ -245,20 +245,20 @@ There are eight landscape attributes associated with each cell of a landscape fi
 +=====================+==============+===============+========+====================================================================================================+
 |Elevation            | elv          | 1             | No     | Elevation of landscape cell in meters                                                              |
 +---------------------+--------------+---------------+--------+----------------------------------------------------------------------------------------------------+
-|Slope                | slp          | 2             | No     | Elevation of landscape cell in meters                                                              |
+|Slope                | slp          | 2             | No     | Slope of landscape cell in degrees (0 to 90)                                                       |
 +---------------------+--------------+---------------+--------+----------------------------------------------------------------------------------------------------+
-|Aspect               | asp          | 3             | No     | Elevation of landscape cell in meters                                                              |
+|Aspect               | asp          | 3             | No     | Aspect of landscape cell in degrees (0 to 360; -1 for no aspect, i.e. flat; 0 is north)            |
 +---------------------+--------------+---------------+--------+----------------------------------------------------------------------------------------------------+
-|Fuel Model           | fm           | 4             | Yes    | Elevation of landscape cell in meters                                                              |
+|Fuel Model           | fm           | 4             | Yes    | Fuel Model (both Fuel Model 40 and Fuel Model 13 values are acceptable)                            |
 +---------------------+--------------+---------------+--------+----------------------------------------------------------------------------------------------------+
-|Stand Height         | sh           | 5             | Yes    | Elevation of landscape cell in meters                                                              |
+|Stand Height         | sh           | 5             | Yes    | Acceptable values range from 0 to 150 meters                                                       |
 +---------------------+--------------+---------------+--------+----------------------------------------------------------------------------------------------------+
-|Canopy Cover         | cc           | 6             | Yes    | Elevation of landscape cell in meters                                                              |
+|Canopy Cover         | cc           | 6             | Yes    | Acceptable values range from 0 to 100 percent                                                      |
 +---------------------+--------------+---------------+--------+----------------------------------------------------------------------------------------------------+
-|Canopy Base Height   | cbh          | 7             | Yes    | Elevation of landscape cell in meters                                                              |
+|Canopy Base Height   | cbh          | 7             | Yes    | Acceptable values range from 0 to 150 meters                                                       |
 +---------------------+--------------+---------------+--------+----------------------------------------------------------------------------------------------------+
-|Canopy Bulk Density  | cbd          | 8             | Yes    | Elevation of landscape cell in meters                                                              |
-+---------------------+--------------+---------------+-------------------------------------------------------------------------------------------------------------+
+|Canopy Bulk Density  | cbd          | 8             | Yes    | Acceptable values range from 0 to 0.50 kg/m^3                                                      |
++---------------------+--------------+---------------+--------+----------------------------------------------------------------------------------------------------+
 
 
 .. note::
