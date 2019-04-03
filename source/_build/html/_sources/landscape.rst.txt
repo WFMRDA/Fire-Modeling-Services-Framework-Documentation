@@ -376,7 +376,6 @@ For example, the following edit rule changes all Grass-Shrub models that occur a
     }
 
 
- 
 That is:
 
 If
@@ -386,7 +385,7 @@ If
 
     the fuel model is less than 130,
 
-then 
+then
     change the fuel model to 104 AND
 
     the stand height to 0 meters AND
@@ -396,3 +395,119 @@ then
     the canopy base height to 0 meters AND
 
     the canopy bulk density to 0 kg / m^3.
+
+The following images are from FlamMap 6 and were captured to display the before and after to verify that fuel model 122 was changed to fuel model 104 and that the canopy characteristics were all set to 0 provided that the elevation was less than 100 meters.
+
+.. image:: files/FlamMap6_Fuel_Model_Change.png 
+    :align: center
+    :alt: flamemape fuel change
+
+It is certainly possible to pass a user-defined edit rule that will not change any attributes on the landscape.  Consider the following syntactically correct user-defined edit rule.
+
+.. code-block:: json
+
+    {
+        "edit":{
+            "condition":[
+                {
+                    "attribute":"fm",
+                    "operator":"le",
+                    "value":121
+                },
+                {
+                    "attribute":"fm",
+                    "operator":"gt",
+                    "value":130
+                }
+            ],
+            "change":[
+                {
+                    "attribute":"fm",
+                    "operator":"st",
+                    "value":104
+                }
+            ]
+        }
+    }
+
+In this edit rule, the condition can never be satisfied as it reads
+
+If
+    the fuel model is less than or equal to 121 AND
+
+    the fuel model is greater than 130
+
+The take away from this is that the Landscape Service will return an appropriate error message for landscape edit rules that are syntactically incorrect but it will not flag issues with edit rules that are logically incorrect.
+Next, consider the following:
+
+.. code-block:: json
+
+    {
+        "edit":[
+            {
+                "condition":[
+                    {
+                    "attribute":"elv",
+                    "operator":"lt",
+                    "value":100
+                    },
+                    {
+                    "attribute":"fm",
+                    "operator":"ge",
+                    "value":121
+                    },
+                    {
+                    "attribute":"fm",
+                    "operator":"lt",
+                    "value":130
+                    }
+                ],
+                "change":{
+                    "attribute":"fm",
+                    "operator":"st",
+                    "value":104
+                }
+            },
+            {
+                "condition":[
+                    {
+                    "attribute":"fm",
+                    "operator":"ge",
+                    "value":121
+                    },
+                    {
+                    "attribute":"fm",
+                    "operator":"lt",
+                    "value":130
+                    }
+                ],
+                "change":[
+                    {
+                    "attribute":"fm",
+                    "operator":"st",
+                    "value":109
+                    },
+                    {
+                    "attribute":"sh",
+                    "operator":"st",
+                    "value":25.5
+                    },
+                    {
+                    "attribute":"cc",
+                    "operator":"st",
+                    "value":18
+                    },
+                    {
+                    "attribute":"cbh",
+                    "operator":"st",
+                    "value":3.7
+                    },
+                    {
+                    "attribute":"cbd",
+                    "operator":"st",
+                    "value":0.02
+                    }
+                ]
+            }
+        ]
+    }

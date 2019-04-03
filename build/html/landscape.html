@@ -107,6 +107,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#combining-landfire-lookup-and-user-defined-edit-rules">Combining LANDFIRE Lookup and User-Defined Edit Rules</a></li>
 </ul>
 </li>
 </ul>
@@ -754,7 +755,553 @@ For example, the following edit rule changes all Grass-Shrub models that occur a
 <p class="last">the canopy bulk density to 0 kg / m^3.</p>
 </dd>
 </dl>
+<p>The following images are from FlamMap 6 and were captured to display the before and after to verify that fuel model 122 was changed to fuel model 104 and that the canopy characteristics were all set to 0 provided that the elevation was less than 100 meters.</p>
+<img alt="flamemape fuel change" class="align-center" src="_images/FlamMap6_Fuel_Model_Change.png" />
+<p>It is certainly possible to pass a user-defined edit rule that will not change any attributes on the landscape.  Consider the following syntactically correct user-defined edit rule.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;edit&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;condition&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;le&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">121</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;gt&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">130</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;change&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">104</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
 </div>
+<p>In this edit rule, the condition can never be satisfied as it reads</p>
+<dl class="docutils">
+<dt>If</dt>
+<dd><p class="first">the fuel model is less than or equal to 121 AND</p>
+<p class="last">the fuel model is greater than 130</p>
+</dd>
+</dl>
+<p>The take away from this is that the Landscape Service will return an appropriate error message for landscape edit rules that are syntactically incorrect but it will not flag issues with edit rules that are logically incorrect.
+Next, consider the following:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;edit&quot;</span><span class="p">:[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;condition&quot;</span><span class="p">:[</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;elv&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;lt&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">100</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;ge&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">121</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;lt&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">130</span>
+                <span class="p">}</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;change&quot;</span><span class="p">:{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">104</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;condition&quot;</span><span class="p">:[</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;ge&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">121</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;lt&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">130</span>
+                <span class="p">}</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;change&quot;</span><span class="p">:[</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">109</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;sh&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mf">25.5</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;cc&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">18</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;cbh&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mf">3.7</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;cbd&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mf">0.02</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In this instance, there are two edit rules.  The first edit rule sets existing Grass-Shrub fuel models to fuel model 104 provided the elevation is less than 100 meters but does not set any other cell attributes.  The second rule sets existing Grass-Shrub fuel models to fuel model 109 and also sets the canopy characteristics of the cell.  A potentially unintended consequence of these two rules is that the canopy characteristics of all the Grass-Shrub fuel models are set by the second rule since none of the canopy characteristics were set by the first rule.  There are two obvious solutions to this conundrum – either set all the attributes within the first edit rule OR add a condition to the second edit rule to avoid setting canopy characteristics for any of the cells touched by the first rule.  That is, you can increase the canopy characteristics by 0 so as to not change them with a subsequent edit rule</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;edit&quot;</span><span class="p">:[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;condition&quot;</span><span class="p">:[</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;elv&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;lt&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">100</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;ge&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">121</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;lt&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">130</span>
+                <span class="p">}</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;change&quot;</span><span class="p">:[</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">104</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;sh&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;ib&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">0</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;cc&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;ib&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">0</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;cbh&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;ib&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">0</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;cbd&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;ib&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">0</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;condition&quot;</span><span class="p">:[</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;ge&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">121</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;lt&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">130</span>
+                <span class="p">}</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;change&quot;</span><span class="p">:[</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">109</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;sh&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mf">25.5</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;cc&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">18</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;cbh&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mf">3.7</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;cbd&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mf">0.02</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Or you can add a condition to the second rule to only modify cells with an elevation greater than or equal to 100 meters</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;edit&quot;</span><span class="p">:[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;condition&quot;</span><span class="p">:[</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;elv&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;lt&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">100</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;ge&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">121</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;lt&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">130</span>
+                <span class="p">}</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;change&quot;</span><span class="p">:{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">104</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;condition&quot;</span><span class="p">:[</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;elv&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;ge&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">100</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;ge&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">121</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;lt&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">130</span>
+                <span class="p">}</span>
+            <span class="p">],</span>
+            <span class="nt">&quot;change&quot;</span><span class="p">:[</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fm&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">109</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;sh&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mf">25.5</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;cc&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">18</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;cbh&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mf">3.7</span>
+                <span class="p">},</span>
+                <span class="p">{</span>
+                    <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;cbd&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mf">0.02</span>
+                <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="combining-landfire-lookup-and-user-defined-edit-rules">
+<h3>Combining LANDFIRE Lookup and User-Defined Edit Rules<a class="headerlink" href="#combining-landfire-lookup-and-user-defined-edit-rules" title="Permalink to this headline">¶</a></h3>
+<p>When a landscape is being edited, LANDFIRE Lookup rules are always applied before user-defined edit rules.  The primary reason for this is that LANDFIRE Lookup rules are based upon the existing vegetation (EV) characteristics (type, height, and cover) as well as the LANDFIRE map zone of a cell.  Since the vast majority of users are not aware of the existing vegetation characteristics of a cell, users are not allowed to edit the EV characteristics when they define a user-defined edit rule.  As a result, the three EV characteristics are unset when a user-defined edit rule modifies the fuel model, the canopy cover, or stand height of a cell.  When Lookup rules are applied to a cell whose existing vegetation characteristics are unset, Fuel Model Lookup rules are applied instead of LANDFIRE Lookup rules (since the information required for using LANDFIRE Lookup rules for that cell no longer exists).  It should be noted that Fuel Model Lookup rules are a generalized version of LANDFIRE Lookup rules and consequently not as precise.
+Therefore, regardless of the relative order of Lookup and user-defined edit rules, the Lookup rules are always applied before the user-defined edit rules.  This does not mean that you cannot apply edit rules prior to Lookup rules – but to do so, you must first create an intermediate landscape to which the user-defined edit rules have been applied.  Next, you would apply Lookup rules to the intermediate landscape.</p>
+<p>Thus, the following sets of edit rules</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;LOOKUP&quot;</span><span class="p">:[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="s2">&quot;treatment&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="s2">&quot;moderate&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;timeframe&quot;</span><span class="p">:</span><span class="mi">3</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="s2">&quot;wildfire&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="s2">&quot;low&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;timeframe&quot;</span><span class="p">:</span><span class="mi">1</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;edit&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;condition&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;elevation&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;lt&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">500</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fuel model&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;eq&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">121</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;change&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fuel model&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">123</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;stand height&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;mb&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mf">0.75</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;edit&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;condition&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;slp&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;le&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">20</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;change&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fuel model&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">147</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;stand height&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;mb&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mf">3.75</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>is equivalent to</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;edit&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;condition&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;elevation&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;lt&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">500</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fuel model&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;eq&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">121</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;change&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fuel model&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">123</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;stand height&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;mb&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mf">0.75</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;LOOKUP&quot;</span><span class="p">:[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="s2">&quot;treatment&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="s2">&quot;moderate&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;timeframe&quot;</span><span class="p">:</span><span class="mi">3</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="s2">&quot;wildfire&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="s2">&quot;low&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;timeframe&quot;</span><span class="p">:</span><span class="mi">1</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;edit&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;condition&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;slp&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;le&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">20</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;change&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fuel model&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">147</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;stand height&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;mb&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mf">3.75</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>and equivalent to</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;edit&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;condition&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;elevation&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;lt&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">500</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fuel model&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;eq&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">121</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;change&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fuel model&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">123</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;stand height&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;mb&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mf">0.75</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;edit&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;condition&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;slp&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;le&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">20</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;change&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fuel model&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">147</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;stand height&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;mb&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mf">3.75</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;LOOKUP&quot;</span><span class="p">:[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="s2">&quot;treatment&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="s2">&quot;moderate&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;timeframe&quot;</span><span class="p">:</span><span class="mi">3</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="s2">&quot;wildfire&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="s2">&quot;low&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;timeframe&quot;</span><span class="p">:</span><span class="mi">1</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>On the other hand, creating an intermediate landscape using the edit rules</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;edit&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;condition&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;elevation&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;lt&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">500</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fuel model&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;eq&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">121</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;change&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fuel model&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">123</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;stand height&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;mb&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mf">0.75</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;edit&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;condition&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;slp&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;le&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">20</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;change&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;fuel model&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;st&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mi">147</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;attribute&quot;</span><span class="p">:</span><span class="s2">&quot;stand height&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;operator&quot;</span><span class="p">:</span><span class="s2">&quot;mb&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="mf">3.75</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>followed by editing the intermediate landscape with the Lookup rules</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;LOOKUP&quot;</span><span class="p">:[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="s2">&quot;treatment&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="s2">&quot;moderate&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;timeframe&quot;</span><span class="p">:</span><span class="mi">3</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;category&quot;</span><span class="p">:</span><span class="s2">&quot;wildfire&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="s2">&quot;low&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;timeframe&quot;</span><span class="p">:</span><span class="mi">1</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>results in a dramatically different landscape.</p>
 </div>
 </div>
 </div>

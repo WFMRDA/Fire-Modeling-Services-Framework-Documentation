@@ -376,7 +376,6 @@ For example, the following edit rule changes all Grass-Shrub models that occur a
     }
 
 
- 
 That is:
 
 If
@@ -386,7 +385,7 @@ If
 
     the fuel model is less than 130,
 
-then 
+then
     change the fuel model to 104 AND
 
     the stand height to 0 meters AND
@@ -396,3 +395,573 @@ then
     the canopy base height to 0 meters AND
 
     the canopy bulk density to 0 kg / m^3.
+
+The following images are from FlamMap 6 and were captured to display the before and after to verify that fuel model 122 was changed to fuel model 104 and that the canopy characteristics were all set to 0 provided that the elevation was less than 100 meters.
+
+.. image:: files/FlamMap6_Fuel_Model_Change.png 
+    :align: center
+    :alt: flamemape fuel change
+
+It is certainly possible to pass a user-defined edit rule that will not change any attributes on the landscape.  Consider the following syntactically correct user-defined edit rule.
+
+.. code-block:: json
+
+    {
+        "edit":{
+            "condition":[
+                {
+                    "attribute":"fm",
+                    "operator":"le",
+                    "value":121
+                },
+                {
+                    "attribute":"fm",
+                    "operator":"gt",
+                    "value":130
+                }
+            ],
+            "change":[
+                {
+                    "attribute":"fm",
+                    "operator":"st",
+                    "value":104
+                }
+            ]
+        }
+    }
+
+In this edit rule, the condition can never be satisfied as it reads
+
+If
+    the fuel model is less than or equal to 121 AND
+
+    the fuel model is greater than 130
+
+The take away from this is that the Landscape Service will return an appropriate error message for landscape edit rules that are syntactically incorrect but it will not flag issues with edit rules that are logically incorrect.
+Next, consider the following:
+
+.. code-block:: json
+ 
+    {
+        "edit":[
+            {
+                "condition":[
+                    {
+                        "attribute":"elv",
+                        "operator":"lt",
+                        "value":100
+                    },
+                    {
+                        "attribute":"fm",
+                        "operator":"ge",
+                        "value":121
+                    },
+                    {
+                        "attribute":"fm",
+                        "operator":"lt",
+                        "value":130
+                    }
+                ],
+                "change":{
+                    "attribute":"fm",
+                    "operator":"st",
+                    "value":104
+                }
+            },
+            {
+                "condition":[
+                    {
+                        "attribute":"fm",
+                        "operator":"ge",
+                        "value":121
+                    },
+                    {
+                        "attribute":"fm",
+                        "operator":"lt",
+                        "value":130
+                    }
+                ],
+                "change":[
+                    {
+                        "attribute":"fm",
+                        "operator":"st",
+                        "value":109
+                    },
+                    {
+                        "attribute":"sh",
+                        "operator":"st",
+                        "value":25.5
+                    },
+                    {
+                        "attribute":"cc",
+                        "operator":"st",
+                        "value":18
+                    },
+                    {
+                        "attribute":"cbh",
+                        "operator":"st",
+                        "value":3.7
+                    },
+                    {
+                        "attribute":"cbd",
+                        "operator":"st",
+                        "value":0.02
+                    }
+                ]
+            }
+        ]
+    }
+
+In this instance, there are two edit rules.  The first edit rule sets existing Grass-Shrub fuel models to fuel model 104 provided the elevation is less than 100 meters but does not set any other cell attributes.  The second rule sets existing Grass-Shrub fuel models to fuel model 109 and also sets the canopy characteristics of the cell.  A potentially unintended consequence of these two rules is that the canopy characteristics of all the Grass-Shrub fuel models are set by the second rule since none of the canopy characteristics were set by the first rule.  There are two obvious solutions to this conundrum – either set all the attributes within the first edit rule OR add a condition to the second edit rule to avoid setting canopy characteristics for any of the cells touched by the first rule.  That is, you can increase the canopy characteristics by 0 so as to not change them with a subsequent edit rule
+
+.. code-block:: json
+
+    {
+        "edit":[
+            {
+                "condition":[
+                    {
+                        "attribute":"elv",
+                        "operator":"lt",
+                        "value":100
+                    },
+                    {
+                        "attribute":"fm",
+                        "operator":"ge",
+                        "value":121
+                    },
+                    {
+                        "attribute":"fm",
+                        "operator":"lt",
+                        "value":130
+                    }
+                ],
+                "change":[
+                    {
+                        "attribute":"fm",
+                        "operator":"st",
+                        "value":104
+                    },
+                    {
+                        "attribute":"sh",
+                        "operator":"ib",
+                        "value":0
+                    },
+                    {
+                        "attribute":"cc",
+                        "operator":"ib",
+                        "value":0
+                    },
+                    {
+                        "attribute":"cbh",
+                        "operator":"ib",
+                        "value":0
+                    },
+                    {
+                        "attribute":"cbd",
+                        "operator":"ib",
+                        "value":0
+                    }
+                ]
+            },
+            {
+                "condition":[
+                    {
+                        "attribute":"fm",
+                        "operator":"ge",
+                        "value":121
+                    },
+                    {
+                        "attribute":"fm",
+                        "operator":"lt",
+                        "value":130
+                    }
+                ],
+                "change":[
+                    {
+                        "attribute":"fm",
+                        "operator":"st",
+                        "value":109
+                    },
+                    {
+                        "attribute":"sh",
+                        "operator":"st",
+                        "value":25.5
+                    },
+                    {
+                        "attribute":"cc",
+                        "operator":"st",
+                        "value":18
+                    },
+                    {
+                        "attribute":"cbh",
+                        "operator":"st",
+                        "value":3.7
+                    },
+                    {
+                        "attribute":"cbd",
+                        "operator":"st",
+                        "value":0.02
+                    }
+                ]
+            }
+        ]
+    }
+
+Or you can add a condition to the second rule to only modify cells with an elevation greater than or equal to 100 meters
+
+.. code-block:: json
+
+    {
+        "edit":[
+            {
+                "condition":[
+                    {
+                        "attribute":"elv",
+                        "operator":"lt",
+                        "value":100
+                    },
+                    {
+                        "attribute":"fm",
+                        "operator":"ge",
+                        "value":121
+                    },
+                    {
+                        "attribute":"fm",
+                        "operator":"lt",
+                        "value":130
+                    }
+                ],
+                "change":{
+                    "attribute":"fm",
+                    "operator":"st",
+                    "value":104
+                }
+            },
+            {
+                "condition":[
+                    {
+                        "attribute":"elv",
+                        "operator":"ge",
+                        "value":100
+                    },
+                    {
+                        "attribute":"fm",
+                        "operator":"ge",
+                        "value":121
+                    },
+                    {
+                        "attribute":"fm",
+                        "operator":"lt",
+                        "value":130
+                    }
+                ],
+                "change":[
+                    {
+                        "attribute":"fm",
+                        "operator":"st",
+                        "value":109
+                    },
+                    {
+                        "attribute":"sh",
+                        "operator":"st",
+                        "value":25.5
+                    },
+                    {
+                        "attribute":"cc",
+                        "operator":"st",
+                        "value":18
+                    },
+                    {
+                        "attribute":"cbh",
+                        "operator":"st",
+                        "value":3.7
+                    },
+                    {
+                        "attribute":"cbd",
+                        "operator":"st",
+                        "value":0.02
+                    }
+                ]
+            }
+        ]
+    }
+
+Combining LANDFIRE Lookup and User-Defined Edit Rules
+-----------------------------------------------------
+
+When a landscape is being edited, LANDFIRE Lookup rules are always applied before user-defined edit rules.  The primary reason for this is that LANDFIRE Lookup rules are based upon the existing vegetation (EV) characteristics (type, height, and cover) as well as the LANDFIRE map zone of a cell.  Since the vast majority of users are not aware of the existing vegetation characteristics of a cell, users are not allowed to edit the EV characteristics when they define a user-defined edit rule.  As a result, the three EV characteristics are unset when a user-defined edit rule modifies the fuel model, the canopy cover, or stand height of a cell.  When Lookup rules are applied to a cell whose existing vegetation characteristics are unset, Fuel Model Lookup rules are applied instead of LANDFIRE Lookup rules (since the information required for using LANDFIRE Lookup rules for that cell no longer exists).  It should be noted that Fuel Model Lookup rules are a generalized version of LANDFIRE Lookup rules and consequently not as precise.
+Therefore, regardless of the relative order of Lookup and user-defined edit rules, the Lookup rules are always applied before the user-defined edit rules.  This does not mean that you cannot apply edit rules prior to Lookup rules – but to do so, you must first create an intermediate landscape to which the user-defined edit rules have been applied.  Next, you would apply Lookup rules to the intermediate landscape.
+
+Thus, the following sets of edit rules
+
+.. code-block:: json
+
+    {
+        "LOOKUP":[
+            {
+                "category":"treatment",
+                "severity":"moderate",
+                "timeframe":3
+            },
+            {
+                "category":"wildfire",
+                "severity":"low",
+                "timeframe":1
+            }
+        ],
+        "edit":{
+            "condition":[
+                {
+                    "attribute":"elevation",
+                    "operator":"lt",
+                    "value":500
+                },
+                {
+                    "attribute":"fuel model",
+                    "operator":"eq",
+                    "value":121
+                }
+            ],
+            "change":[
+                {
+                    "attribute":"fuel model",
+                    "operator":"st",
+                    "value":123
+                },
+                {
+                    "attribute":"stand height",
+                    "operator":"mb",
+                    "value":0.75
+                }
+            ]
+        },
+        "edit":{
+            "condition":[
+                {
+                    "attribute":"slp",
+                    "operator":"le",
+                    "value":20
+                }
+            ],
+            "change":[
+                {
+                    "attribute":"fuel model",
+                    "operator":"st",
+                    "value":147
+                },
+                {
+                    "attribute":"stand height",
+                    "operator":"mb",
+                    "value":3.75
+                }
+            ]
+        }
+    }
+
+is equivalent to
+
+.. code-block:: json
+
+    {
+        "edit":{
+            "condition":[
+                {
+                    "attribute":"elevation",
+                    "operator":"lt",
+                    "value":500
+                },
+                {
+                    "attribute":"fuel model",
+                    "operator":"eq",
+                    "value":121
+                }
+            ],
+            "change":[
+                {
+                    "attribute":"fuel model",
+                    "operator":"st",
+                    "value":123
+                },
+                {
+                    "attribute":"stand height",
+                    "operator":"mb",
+                    "value":0.75
+                }
+            ]
+        },
+        "LOOKUP":[
+            {
+                "category":"treatment",
+                "severity":"moderate",
+                "timeframe":3
+            },
+            {
+                "category":"wildfire",
+                "severity":"low",
+                "timeframe":1
+            }
+        ],
+        "edit":{
+            "condition":[
+                {
+                    "attribute":"slp",
+                    "operator":"le",
+                    "value":20
+                }
+            ],
+            "change":[
+                {
+                    "attribute":"fuel model",
+                    "operator":"st",
+                    "value":147
+                },
+                {
+                    "attribute":"stand height",
+                    "operator":"mb",
+                    "value":3.75
+                }
+            ]
+        }
+    }
+
+and equivalent to
+
+.. code-block:: json
+
+    {
+        "edit":{
+            "condition":[
+                {
+                    "attribute":"elevation",
+                    "operator":"lt",
+                    "value":500
+                },
+                {
+                    "attribute":"fuel model",
+                    "operator":"eq",
+                    "value":121
+                }
+            ],
+            "change":[
+                {
+                    "attribute":"fuel model",
+                    "operator":"st",
+                    "value":123
+                },
+                {
+                    "attribute":"stand height",
+                    "operator":"mb",
+                    "value":0.75
+                }
+            ]
+        },
+        "edit":{
+            "condition":[
+                {
+                    "attribute":"slp",
+                    "operator":"le",
+                    "value":20
+                }
+            ],
+            "change":[
+                {
+                    "attribute":"fuel model",
+                    "operator":"st",
+                    "value":147
+                },
+                {
+                    "attribute":"stand height",
+                    "operator":"mb",
+                    "value":3.75
+                }
+            ]
+        },
+        "LOOKUP":[
+            {
+                "category":"treatment",
+                "severity":"moderate",
+                "timeframe":3
+            },
+            {
+                "category":"wildfire",
+                "severity":"low",
+                "timeframe":1
+            }
+        ]
+    }
+
+On the other hand, creating an intermediate landscape using the edit rules
+
+.. code-block:: json
+
+    {
+        "edit":{
+            "condition":[
+                {
+                    "attribute":"elevation",
+                    "operator":"lt",
+                    "value":500
+                },
+                {
+                    "attribute":"fuel model",
+                    "operator":"eq",
+                    "value":121
+                }
+            ],
+            "change":[
+                {
+                    "attribute":"fuel model",
+                    "operator":"st",
+                    "value":123
+                },
+                {
+                    "attribute":"stand height",
+                    "operator":"mb",
+                    "value":0.75
+                }
+            ]
+        },
+        "edit":{
+            "condition":[
+                {
+                    "attribute":"slp",
+                    "operator":"le",
+                    "value":20
+                }
+            ],
+            "change":[
+                {
+                    "attribute":"fuel model",
+                    "operator":"st",
+                    "value":147
+                },
+                {
+                    "attribute":"stand height",
+                    "operator":"mb",
+                    "value":3.75
+                }
+            ]
+        }
+    }
+
+followed by editing the intermediate landscape with the Lookup rules
+
+.. code-block:: json
+
+    {
+        "LOOKUP":[
+            {
+                "category":"treatment",
+                "severity":"moderate",
+                "timeframe":3
+            },
+            {
+                "category":"wildfire",
+                "severity":"low",
+                "timeframe":1
+            }
+        ]
+    }
+
+results in a dramatically different landscape.
