@@ -13,7 +13,8 @@ Request Body
 ------------
 
 .. note::
-    Currently we only accept :code:`x-www-form-urlencoded` response body
+    | Currently we only accept :code:`x-www-form-urlencoded` response body.
+    | We currently have data for the United States. If Latitudes and Longitudes fall outside of the United States then empty data cells will be returned.
 
 +------------------+---------+----------+-----------------------+-------------------------------------------------------------+
 | Param            | type    | Required | Options               | Description                                                 |
