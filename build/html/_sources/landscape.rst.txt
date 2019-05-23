@@ -266,7 +266,7 @@ There are eight landscape attributes associated with each cell of a landscape fi
 
 The Condition Operator Data Element
 -----------------------------------
- 
+
 There are six condition operator data element values as defined in the following table.
 
 +----------+------------------------------------------------------+
@@ -283,12 +283,12 @@ There are six condition operator data element values as defined in the following
 |LT        | is less than the rule’s value                        |
 +----------+------------------------------------------------------+
 
-Multiple conditions can exist for the same attribute.  For example, between can be accomplished by using a combination of a greater than operator with a less than operator.  However, the logical operator between all conditions within a single edit rule is AND.  Thus, multiple user-defined edit rules are required to simulate a logical OR condition.
+Multiple conditions can exist for the same attribute.  For example, between can be accomplished by using a combination of a greater than operator with a less than operator.  However, the logical operator between all conditions within a single edit rule is AND.
 
 The Change Operator Data Element
 --------------------------------
- 
-There are seven change operator data element values as defined in the following table.	
+
+There are seven change operator data element values as defined in the following table.
 
 +------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Operator   | The condition is true if the specified attribute...                                                                                                     |
@@ -306,8 +306,6 @@ There are seven change operator data element values as defined in the following 
 |MB          | Multiply by – multiply the attribute value by the associated value; if the new value is out of range, set it to the maximum value for the attribute     |
 +------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
 |ST :sup:`*` | Set the attribute to the given value                                                                                                                    |
-+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
-|CX          | Clamp to a maximum – if the attribute value is greater  than the associated value, set it to that value                                                 |
 +------------+---------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 .. note::
@@ -711,53 +709,55 @@ Thus, the following sets of edit rules
                 "timeframe":1
             }
         ],
-        "edit":{
-            "condition":[
-                {
-                    "attribute":"elevation",
-                    "operator":"lt",
-                    "value":500
-                },
-                {
-                    "attribute":"fuel model",
-                    "operator":"eq",
-                    "value":121
-                }
-            ],
-            "change":[
-                {
-                    "attribute":"fuel model",
-                    "operator":"st",
-                    "value":123
-                },
-                {
-                    "attribute":"stand height",
-                    "operator":"mb",
-                    "value":0.75
-                }
-            ]
-        },
-        "edit":{
-            "condition":[
-                {
-                    "attribute":"slp",
-                    "operator":"le",
-                    "value":20
-                }
-            ],
-            "change":[
-                {
-                    "attribute":"fuel model",
-                    "operator":"st",
-                    "value":147
-                },
-                {
-                    "attribute":"stand height",
-                    "operator":"mb",
-                    "value":3.75
-                }
-            ]
-        }
+        "edit":[
+            {
+                "condition":[
+                    {
+                        "attribute":"elevation",
+                        "operator":"lt",
+                        "value":500
+                    },
+                    {
+                        "attribute":"fuel model",
+                        "operator":"eq",
+                        "value":121
+                    }
+                ],
+                "change":[
+                    {
+                        "attribute":"fuel model",
+                        "operator":"st",
+                        "value":123
+                    },
+                    {
+                        "attribute":"stand height",
+                        "operator":"mb",
+                        "value":0.75
+                    }
+                ]
+            },
+            {
+                "condition":[
+                    {
+                        "attribute":"slp",
+                        "operator":"le",
+                        "value":20
+                    }
+                ],
+                "change":[
+                    {
+                        "attribute":"fuel model",
+                        "operator":"st",
+                        "value":147
+                    },
+                    {
+                        "attribute":"stand height",
+                        "operator":"mb",
+                        "value":3.75
+                    }
+                ]
+            }
+        ], 
     }
 
 is equivalent to
@@ -765,32 +765,55 @@ is equivalent to
 .. code-block:: json
 
     {
-        "edit":{
-            "condition":[
-                {
-                    "attribute":"elevation",
-                    "operator":"lt",
-                    "value":500
-                },
-                {
-                    "attribute":"fuel model",
-                    "operator":"eq",
-                    "value":121
-                }
-            ],
-            "change":[
-                {
-                    "attribute":"fuel model",
-                    "operator":"st",
-                    "value":123
-                },
-                {
-                    "attribute":"stand height",
-                    "operator":"mb",
-                    "value":0.75
-                }
-            ]
-        },
+        "edit":[
+            {
+                "condition":[
+                    {
+                        "attribute":"elevation",
+                        "operator":"lt",
+                        "value":500
+                    },
+                    {
+                        "attribute":"fuel model",
+                        "operator":"eq",
+                        "value":121
+                    }
+                ],
+                "change":[
+                    {
+                        "attribute":"fuel model",
+                        "operator":"st",
+                        "value":123
+                    },
+                    {
+                        "attribute":"stand height",
+                        "operator":"mb",
+                        "value":0.75
+                    }
+                ]
+            },
+            {
+                "condition":[
+                    {
+                        "attribute":"slp",
+                        "operator":"le",
+                        "value":20
+                    }
+                ],
+                "change":[
+                    {
+                        "attribute":"fuel model",
+                        "operator":"st",
+                        "value":147
+                    },
+                    {
+                        "attribute":"stand height",
+                        "operator":"mb",
+                        "value":3.75
+                    }
+                ]
+            }
+        ],
         "LOOKUP":[
             {
                 "category":"treatment",
@@ -802,28 +825,8 @@ is equivalent to
                 "severity":"low",
                 "timeframe":1
             }
-        ],
-        "edit":{
-            "condition":[
-                {
-                    "attribute":"slp",
-                    "operator":"le",
-                    "value":20
-                }
-            ],
-            "change":[
-                {
-                    "attribute":"fuel model",
-                    "operator":"st",
-                    "value":147
-                },
-                {
-                    "attribute":"stand height",
-                    "operator":"mb",
-                    "value":3.75
-                }
-            ]
-        }
+        ], 
+
     }
 
 and equivalent to
@@ -831,53 +834,55 @@ and equivalent to
 .. code-block:: json
 
     {
-        "edit":{
-            "condition":[
-                {
-                    "attribute":"elevation",
-                    "operator":"lt",
-                    "value":500
-                },
-                {
-                    "attribute":"fuel model",
-                    "operator":"eq",
-                    "value":121
-                }
-            ],
-            "change":[
-                {
-                    "attribute":"fuel model",
-                    "operator":"st",
-                    "value":123
-                },
-                {
-                    "attribute":"stand height",
-                    "operator":"mb",
-                    "value":0.75
-                }
-            ]
-        },
-        "edit":{
-            "condition":[
-                {
-                    "attribute":"slp",
-                    "operator":"le",
-                    "value":20
-                }
-            ],
-            "change":[
-                {
-                    "attribute":"fuel model",
-                    "operator":"st",
-                    "value":147
-                },
-                {
-                    "attribute":"stand height",
-                    "operator":"mb",
-                    "value":3.75
-                }
-            ]
-        },
+        "edit":[
+            {
+                "condition":[
+                    {
+                        "attribute":"elevation",
+                        "operator":"lt",
+                        "value":500
+                    },
+                    {
+                        "attribute":"fuel model",
+                        "operator":"eq",
+                        "value":121
+                    }
+                ],
+                "change":[
+                    {
+                        "attribute":"fuel model",
+                        "operator":"st",
+                        "value":123
+                    },
+                    {
+                        "attribute":"stand height",
+                        "operator":"mb",
+                        "value":0.75
+                    }
+                ]
+            },
+            {
+                "condition":[
+                    {
+                        "attribute":"slp",
+                        "operator":"le",
+                        "value":20
+                    }
+                ],
+                "change":[
+                    {
+                        "attribute":"fuel model",
+                        "operator":"st",
+                        "value":147
+                    },
+                    {
+                        "attribute":"stand height",
+                        "operator":"mb",
+                        "value":3.75
+                    }
+                ]
+            },
+        ],
         "LOOKUP":[
             {
                 "category":"treatment",
@@ -897,53 +902,55 @@ On the other hand, creating an intermediate landscape using the edit rules
 .. code-block:: json
 
     {
-        "edit":{
-            "condition":[
-                {
-                    "attribute":"elevation",
-                    "operator":"lt",
-                    "value":500
-                },
-                {
-                    "attribute":"fuel model",
-                    "operator":"eq",
-                    "value":121
-                }
-            ],
-            "change":[
-                {
-                    "attribute":"fuel model",
-                    "operator":"st",
-                    "value":123
-                },
-                {
-                    "attribute":"stand height",
-                    "operator":"mb",
-                    "value":0.75
-                }
-            ]
-        },
-        "edit":{
-            "condition":[
-                {
-                    "attribute":"slp",
-                    "operator":"le",
-                    "value":20
-                }
-            ],
-            "change":[
-                {
-                    "attribute":"fuel model",
-                    "operator":"st",
-                    "value":147
-                },
-                {
-                    "attribute":"stand height",
-                    "operator":"mb",
-                    "value":3.75
-                }
-            ]
-        }
+        "edit":[
+            {
+                "condition":[
+                    {
+                        "attribute":"elevation",
+                        "operator":"lt",
+                        "value":500
+                    },
+                    {
+                        "attribute":"fuel model",
+                        "operator":"eq",
+                        "value":121
+                    }
+                ],
+                "change":[
+                    {
+                        "attribute":"fuel model",
+                        "operator":"st",
+                        "value":123
+                    },
+                    {
+                        "attribute":"stand height",
+                        "operator":"mb",
+                        "value":0.75
+                    }
+                ]
+            }, 
+            {
+                "condition":[
+                    {
+                        "attribute":"slp",
+                        "operator":"le",
+                        "value":20
+                    }
+                ],
+                "change":[
+                    {
+                        "attribute":"fuel model",
+                        "operator":"st",
+                        "value":147
+                    },
+                    {
+                        "attribute":"stand height",
+                        "operator":"mb",
+                        "value":3.75
+                    }
+                ]
+            }
+        ]
     }
 
 followed by editing the intermediate landscape with the Lookup rules
