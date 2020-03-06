@@ -8,7 +8,6 @@ Welcome to the Fire Modeling Services Framework.
 
 .. note::
     We currently do not have any SKD's available for download. These are currently in development.
-    All interactions can be tested using either ":download:`Postman <files/Fire_Modeling_Services_Framework.postman_collection.zip>` or |swagger_link|.
 
     We also have a tutorial site located at |tutorial_site|.
 
@@ -24,11 +23,11 @@ Access
 
    landscape
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Modeling Service
+.. .. toctree::
+..    :maxdepth: 2
+..    :caption: Modeling Service
 
-   basic
+..    basic
 
 .. |swagger_link| raw:: html
 
