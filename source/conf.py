@@ -21,7 +21,7 @@ from recommonmark.parser import CommonMarkParser
 # -- Project information -----------------------------------------------------
 
 project = u'Modeling Service Documentation'
-copyright = u'2019, Wildland Fire Management RD&A'
+copyright = u'2020, Wildland Fire Management RD&A'
 author = u'Reggie Goolsby'
 
 # The short X.Y version
@@ -76,7 +76,7 @@ pygments_style = None
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-#
+# http://www.writethedocs.org/guide/tools/sphinx-themes/
 html_theme = 'sphinx_rtd_theme' #'alabaster'
 
 # Theme options are theme-specific and customize the look and feel of a theme

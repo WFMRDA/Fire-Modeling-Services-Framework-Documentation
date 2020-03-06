@@ -13,6 +13,14 @@ Welcome to the Fire Modeling Services Framework.
 
     We also have a tutorial site located at |tutorial_site|.
 
+.. **Getting started**: :doc:`Recommended External Applications <intro/getting-started>`
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Resources
+
+   getting-started
+
 .. toctree::
    :maxdepth: 2
    :caption: Landscape Service
@@ -24,6 +32,10 @@ Welcome to the Fire Modeling Services Framework.
    :caption: Modeling Service
 
    basic
+   mtt
+   randig
+   farsite
+   fspro
 
 
 .. |swagger_link| raw:: html

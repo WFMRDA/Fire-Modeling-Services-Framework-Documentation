@@ -4,10 +4,39 @@ Landscape Service
 The Landscape Service allows users to create, edit and download landscapes files.
 Landscape files can be created in either geotiff or LCP which is a raster file comprised of spatial information representing topography (slope, elevation, and aspect), fuel model, and canopy characteristics including canopy cover, canopy base height, canopy height, and canopy bulk density.
 
+Access
+******
+
+.. warning::
+    | Access is password protected. Please contact the Wildland Fire Management Research Development and Applications for access.
+
+
+Swagger Account
+---------------
+
+|swagger_link|
+
+.. |swagger_link| raw:: html
+
+    <a href="http://192.255.42.9/landscapeREST/api/index.html" target="_blank">http://192.255.42.9/landscapeREST/api/index.html</a>
+
+
+REST Endpoints
+--------------
+
+|rest_link|
+
+.. |rest_link| raw:: html
+
+    <a href="http://192.255.42.9/landscapeREST" target="_blank">http://192.255.42.9/landscapeREST</a>
+
+
 Creating A Landscape
 ********************
 
-Creating a landscape required a POST
+.. Endpoint
+.. --------
+.. **POST** `http://192.255.42.9/landscapeREST/landscape/create`
 
 Request Body
 ------------
@@ -77,6 +106,32 @@ Response
 +-------------------------+---------+
 |*entityId*               | integer |
 +-------------------------+---------+
+
+.. Editing A Landscape
+.. *******************
+
+.. Endpoint
+.. --------
+
+.. **POST** `http://192.255.42.9/landscapeREST/landscape/edit`
+
+.. Request Body
+.. ------------
+
+.. +------------------------+---------+----------+-----------------------+-------------------------------------------------------------+
+.. | Param                  | type    | Required | Options               | Description                                                 |
+.. +========================+=========+==========+=======================+=============================================================+
+.. |"Landscape Identifier"  | number  | *true*   |                       | A landscape ID from a previous landscape create             |
+.. +------------------------+---------+----------+-----------------------+-------------------------------------------------------------+
+.. |"Generate Geotiff"      | boolean | *true*   |                       |                                                             |
+.. +------------------------+---------+----------+-----------------------+-------------------------------------------------------------+
+.. |"Edit Rules"            | string  | *true*   |  See `Edit Rules`_    |                                                             |
+.. +------------------------+---------+----------+-----------------------+-------------------------------------------------------------+
+
+
+
+
+
 
 
 
@@ -397,7 +452,7 @@ then
 
 The following images are from FlamMap 6 and were captured to display the before and after to verify that fuel model 122 was changed to fuel model 104 and that the canopy characteristics were all set to 0 provided that the elevation was less than 100 meters.
 
-.. image:: files/FlamMap6_Fuel_Model_Change.png 
+.. image:: files/FlamMap6_Fuel_Model_Change.png
     :align: center
     :alt: flamemape fuel change
 
@@ -440,7 +495,7 @@ The take away from this is that the Landscape Service will return an appropriate
 Next, consider the following:
 
 .. code-block:: json
- 
+
     {
         "edit":[
             {
@@ -757,7 +812,7 @@ Thus, the following sets of edit rules
                     }
                 ]
             }
-        ], 
+        ],
     }
 
 is equivalent to
@@ -825,7 +880,7 @@ is equivalent to
                 "severity":"low",
                 "timeframe":1
             }
-        ], 
+        ],
 
     }
 
@@ -928,7 +983,7 @@ On the other hand, creating an intermediate landscape using the edit rules
                         "value":0.75
                     }
                 ]
-            }, 
+            },
             {
                 "condition":[
                     {
