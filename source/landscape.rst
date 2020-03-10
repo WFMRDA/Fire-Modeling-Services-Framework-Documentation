@@ -1,6 +1,51 @@
 Landscape Service
 =================
 
+
+.. |rest_link| raw:: html
+
+    <a href="http://192.255.42.9/landscapeREST" target="_blank">http://192.255.42.9/landscapeREST</a>
+
+.. |swagger_link| raw:: html
+
+    <a href="http://192.255.42.9/landscapeREST/api/index.html" target="_blank">http://192.255.42.9/landscapeREST/api/index.html</a>
+
+.. |swagger_create_link| raw:: html
+
+    <a href="http://192.255.42.9/landscapeREST/api/index.html#/landscape/createLandscape" target="_blank">http://192.255.42.9/landscapeREST/api/index.html#/landscape/createLandscape</a>
+
+.. |swagger_edit_link| raw:: html
+
+    <a href="http://192.255.42.9/landscapeREST/api/index.html#/landscape/editLandscape" target="_blank">http://192.255.42.9/landscapeREST/api/index.html#/landscape/editLandscape</a>
+
+.. |swagger_uploadgeotiff_link| raw:: html
+
+    <a href="http://192.255.42.9/landscapeREST/api/index.html#/landscape/uploadGeotiff" target="_blank">http://192.255.42.9/landscapeREST/api/index.html#/landscape/uploadGeotiff</a>
+
+.. |swagger_rebuild_link| raw:: html
+
+    <a href="http://192.255.42.9/landscapeREST/api/index.html#/landscape/rebuildLandscape" target="_blank">http://192.255.42.9/landscapeREST/api/index.html#/landscape/rebuildLandscape</a>
+
+.. |swagger_get_lcp_link| raw:: html
+
+    <a href="http://192.255.42.9/landscapeREST/api/index.html#/landscape/getLandscape" target="_blank">http://192.255.42.9/landscapeREST/api/index.html#/landscape/getLandscape</a>
+
+.. |swagger_get_geotiff_link| raw:: html
+
+    <a href="http://192.255.42.9/landscapeREST/api/index.html#/landscape/getLandscapeGeotiff" target="_blank">http://192.255.42.9/landscapeREST/api/index.html#/landscape/getLandscapeGeotiff</a>
+
+.. |swagger_get_metadata_link| raw:: html
+
+    <a href="http://192.255.42.9/landscapeREST/api/index.html#/landscape/getLandscapeMetadata" target="_blank">http://192.255.42.9/landscapeREST/api/index.html#/landscape/getLandscapeMetadata</a>
+
+.. |swagger_get_status_link| raw:: html
+
+    <a href="http://192.255.42.9/landscapeREST/api/index.html#/landscape/getLandscapeStatus" target="_blank">http://192.255.42.9/landscapeREST/api/index.html#/landscape/getLandscapeStatus</a>
+
+.. |swagger_uploadshape_link| raw:: html
+
+    <a href="http://192.255.42.9/landscapeREST/api/index.html#/landscape/uploadShape" target="_blank">http://192.255.42.9/landscapeREST/api/index.html#/landscape/uploadShape</a>
+
 The Landscape Service allows users to create, edit and download landscapes files.
 Landscape files can be created in either geotiff or LCP which is a raster file comprised of spatial information representing topography (slope, elevation, and aspect), fuel model, and canopy characteristics including canopy cover, canopy base height, canopy height, and canopy bulk density.
 
@@ -11,35 +56,34 @@ Access
     | Access is password protected. Please contact the Wildland Fire Management Research Development and Applications for access.
 
 
-Swagger Account
----------------
+Swagger URL
+-----------
+
+For live testing please visit our Swagger interface.
 
 |swagger_link|
 
-.. |swagger_link| raw:: html
-
-    <a href="http://192.255.42.9/landscapeREST/api/index.html" target="_blank">http://192.255.42.9/landscapeREST/api/index.html</a>
-
-
-REST Endpoints
---------------
+REST URL
+--------
 
 |rest_link|
 
-.. |rest_link| raw:: html
 
-    <a href="http://192.255.42.9/landscapeREST" target="_blank">http://192.255.42.9/landscapeREST</a>
+Endpoints
+*********
 
+Create Landscape
+----------------
 
-Creating A Landscape
-********************
+URLS
+++++
 
-.. Endpoint
-.. --------
-.. **POST** `http://192.255.42.9/landscapeREST/landscape/create`
+**Swagger:** |swagger_create_link|
+
+**Rest:** *POST* `http://192.255.42.9/landscapeREST/landscape/create`
 
 Request Body
-------------
+++++++++++++
 
 .. note::
     | Currently we only accept :code:`x-www-form-urlencoded` response body.
@@ -73,60 +117,130 @@ Request Body
 |"Generate Geotiff"| boolean | *true*   |                       |                                                             |
 +------------------+---------+----------+-----------------------+-------------------------------------------------------------+
 
-Response
---------
 
-.. code-block:: json
-
-    {
-        "success": true,
-        "queued": false,
-        "includesWarningOrInfo": false,
-        "multipleResponseMsgs": false,
-        "msgCollector": null,
-        "responseMessage": "Request to create landscape with ID 5404 has been submitted",
-        "entityId": 5404
-    }
+Edit Landscape
+--------------
 
 
-+-------------------------+---------+
-| Param                   | type    |
-+=========================+=========+
-|*success*                | boolean |
-+-------------------------+---------+
-|*queued*                 | boolean |
-+-------------------------+---------+
-|*includesWarningOrInfo*  | boolean |
-+-------------------------+---------+
-|*multipleResponseMsgs*   | boolean |
-+-------------------------+---------+
-|*msgCollector*           | string  |
-+-------------------------+---------+
-|*responseMessage*        | string  |
-+-------------------------+---------+
-|*entityId*               | integer |
-+-------------------------+---------+
+URLS
+++++
 
-.. Editing A Landscape
-.. *******************
+**Swagger:** |swagger_edit_link|
 
-.. Endpoint
-.. --------
+**Rest:** *POST* `http://192.255.42.9/landscapeREST/landscape/edit`
 
-.. **POST** `http://192.255.42.9/landscapeREST/landscape/edit`
+Request Body
+++++++++++++
 
-.. Request Body
-.. ------------
++------------------------+---------+----------+--------------------+-------------------------------------------------------------+
+| Param                  | type    | Required | Options            | Description                                                 |
++========================+=========+==========+====================+=============================================================+
+|"Landscape Identifier"  | number  | *true*   |                    | A landscape ID from a previous landscape create             |
++------------------------+---------+----------+--------------------+-------------------------------------------------------------+
+|"Generate Geotiff"      | boolean | *true*   |                    |                                                             |
++------------------------+---------+----------+--------------------+-------------------------------------------------------------+
+|"Edit Rules"            | string  | *true*   |  See `Edit Rules`_ |                                                             |
++------------------------+---------+----------+--------------------+-------------------------------------------------------------+
 
-.. +------------------------+---------+----------+-----------------------+-------------------------------------------------------------+
-.. | Param                  | type    | Required | Options               | Description                                                 |
-.. +========================+=========+==========+=======================+=============================================================+
-.. |"Landscape Identifier"  | number  | *true*   |                       | A landscape ID from a previous landscape create             |
-.. +------------------------+---------+----------+-----------------------+-------------------------------------------------------------+
-.. |"Generate Geotiff"      | boolean | *true*   |                       |                                                             |
-.. +------------------------+---------+----------+-----------------------+-------------------------------------------------------------+
-.. |"Edit Rules"            | string  | *true*   |  See `Edit Rules`_    |                                                             |
-.. +------------------------+---------+----------+-----------------------+-------------------------------------------------------------+
+
+Upload Landcape Geotiff
+-----------------------
+
+URLS
+++++
+
+**Swagger:** |swagger_uploadgeotiff_link|
+
+**Rest:** *POST* `http://192.255.42.9/landscapeREST/landscape/upload`
+
+
+Request Body
+++++++++++++
+
+This endpoint is available and being deprecated. Please Do Not Use as it will not be available in the next service
+
++--------------------+-------------------+----------+---------+-------------------------------------------------------------+
+| Param              | type              | Required | Options | Description                                                 |
++====================+===================+==========+=========+=============================================================+
+|"Geotiff Landscape" | string(*base64*)  | *true*   |         | A landscape Geotiff from the IFTDSS Application             |
++--------------------+-------------------+----------+---------+-------------------------------------------------------------+
+
+
+Rebuild Landscape
+-----------------
+
+URLS
+++++
+
+**Swagger:** |swagger_rebuild_link|
+
+**Rest:** *POST* `http://192.255.42.9/landscapeREST/landscape/rebuild`
+
+
+Request Body
+++++++++++++
+
+This endpoint is available and being deprecated. Please Do Not Use as it will not be available in the next service
+
++---------------+----------+----------+---------+-------------------------------------------------------------+
+| Param         | type     | Required | Options | Description                                                 |
++===============+==========+==========+=========+=============================================================+
+|"Landscape ID" | string   | *true*   |         | A previous landscape entity ID                              |
++---------------+----------+----------+---------+-------------------------------------------------------------+
+
+
+Retrieve Landscapes
+-------------------
+
+LCP URL
++++++++
+
+**Swagger:** |swagger_get_lcp_link|
+
+**Rest:** *GET* `http://192.255.42.9/landscapeREST/landscape/lcp/{Landscape ID}`
+
+Geotiff URL
++++++++++++
+
+**Swagger:** |swagger_get_geotiff_link|
+
+**Rest:** *GET* `http://192.255.42.9/landscapeREST/landscape/geotiff/{Landscape ID}`
+
+Metadata URL
+++++++++++++
+
+**Swagger:** |swagger_get_metadata_link|
+
+**Rest:** *GET* `http://192.255.42.9/landscapeREST/landscape/metadata/{Landscape ID}`
+
+Status URL
+++++++++++
+
+**Swagger:** |swagger_get_status_link|
+
+**Rest:** *GET* `http://192.255.42.9/landscapeREST/landscape/status/{Landscape ID}`
+
+
+Upload Shape For Mask
+---------------------
+
+URLS
+++++
+
+**Swagger:** |swagger_uploadshape_link|
+
+**Rest:** *POST* `http://192.255.42.9/landscapeREST/landscape/uploadShape`
+
+Request Body
+++++++++++++
+
+
++--------------------+-------------------+----------+---------+----------------------------------------------------------------------------------------------+
+| Param              | type              | Required | Options | Description                                                                                  |
++====================+===================+==========+=========+==============================================================================================+
+|"Shape File"        | string(*base64*)  | *true*   |         | A shape file to the shape project for use as a landscape mask or a model ignition or barrier |
++--------------------+-------------------+----------+---------+----------------------------------------------------------------------------------------------+
+
 
 
 
@@ -373,7 +487,7 @@ The Value Data Element
 For both condition and change data objects, the Value data element must be numeric.
 
 Examples
-^^^^^^^^
+++++++++
 
 Multiple conditions within a user-defined edit rule are always ANDed together.  That is, all the conditions must be true in order for the associated changes to be applied.  You will need to use multiple user-defined edit rules to simulate an OR condition.
 For example, the following edit rule changes all Grass-Shrub models that occur at an elevation less than 100 meters to fuel model 104 (GR4 - Moderate Load, Dry Climate Grass) with no canopy characteristics.
